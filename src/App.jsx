@@ -7,7 +7,9 @@ import SignInForm from "./components/SignInForm/SignInForm";
 import Landing from "./components/Landing/Landing";
 import Dashboard from "./components/Dashboard/Dashboard";
 import DiaryList from "./components/DiaryList/DiaryList";
-import * as diaryService from "./services/diaryService";
+import * as diaryService from "./services/diaryService"; 
+import DiaryDetails from "./components/DiaryDetails/DiaryDetails"
+import DiaryForm from "./components/DiaryForm/DiaryForm";
 
 import { UserContext } from "./contexts/UserContext";
 
@@ -31,7 +33,10 @@ const App = () => {
         {user ? (
           <>
             <Route path="/diary" element={<DiaryList diary={diary} />} />
+             <Route path="/diary/:diaryId" element={<DiaryDetails />} />
+             <Route path="/diary/new" element={<DiaryForm />} />
           </>
+         
         ) : (
           <>
             <Route path="/sign-up" element={<SignUpForm />} />
