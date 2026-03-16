@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router";
 import * as diaryService from "../../services/diaryService";
 
 const DiaryForm = (props) => {
+  const { diaryId } = useParams();
+
   const [formData, setFormData] = useState({
     name: "",
     location: "",
@@ -21,12 +23,26 @@ const DiaryForm = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.handleAddDiary(formData);
+    if (diaryId) {
+      props.handleUpdateDiary(diaryId, formData);
+    } else {
+      props.handleAddDiary(formData);
+    }
   };
+
+  useEffect(() => {
+    const fetchDiary = async () => {
+      const diaryData = await diaryService.show(diaryId);
+      setFormData(diaryData);
+    };
+    if (diaryId) fetchDiary();
+    return () =>
+      setFormData({ name: "", location: "", cuisine: "", rating: "" });
+  }, [diaryId]);
 
   return (
     <main>
-      <h1>New Diary</h1>
+      <h1>{diaryId ? "Edit Diary" : "New Diary"}</h1>
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="name-input">Name</label>

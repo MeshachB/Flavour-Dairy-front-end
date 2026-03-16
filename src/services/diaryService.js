@@ -70,4 +70,20 @@ const deleteDiary = async (diaryId) => {
   }
 };
 
-export { index, show, create, createComment, deleteDiary };
+async function update(diaryId, diaryFormData) {
+  try {
+    const res = await fetch(`${BASE_URL}/${diaryId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(diaryFormData),
+    });
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export { index, show, create, createComment, deleteDiary, update };

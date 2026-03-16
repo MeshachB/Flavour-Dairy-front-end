@@ -38,6 +38,14 @@ const App = () => {
     navigate("/diary");
   };
 
+  const handleUpdateDiary = async (diaryId, diaryFormData) => {
+    const updatedDiary = await diaryService.update(diaryId, diaryFormData);
+    setDiary(
+      diary.map((diary) => (diaryId === diary._id ? updatedDiary : diary)),
+    );
+    navigate(`/diary/${diaryId}`);
+  };
+
   return (
     <>
       <NavBar />
@@ -53,6 +61,10 @@ const App = () => {
             <Route
               path="/diary/new"
               element={<DiaryForm handleAddDiary={handleAddDiary} />}
+            />
+            <Route
+              path="/diary/:diaryId/edit"
+              element={<DiaryForm handleUpdateDiary={handleUpdateDiary} />}
             />
           </>
         ) : (

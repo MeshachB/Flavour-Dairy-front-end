@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router";
+import { useParams, Link } from "react-router";
 import { useEffect, useState, useContext } from "react";
 import * as diaryService from "../../services/diaryService";
 import CommentForm from "../CommentForm/CommentForm";
@@ -8,8 +8,6 @@ const DiaryDetails = (props) => {
   const { diaryId } = useParams();
   const { user } = useContext(UserContext);
   const [diary, setDiary] = useState(null);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDiary = async () => {
@@ -43,6 +41,7 @@ const DiaryDetails = (props) => {
         <p>Rating: {diary.rating}</p>
         {diary.author._id === user._id && (
           <>
+            <Link to={`/diary/${diaryId}/edit`}>Edit</Link>
             <button onClick={() => props.handleDeleteDiary(diaryId)}>
               Delete
             </button>
