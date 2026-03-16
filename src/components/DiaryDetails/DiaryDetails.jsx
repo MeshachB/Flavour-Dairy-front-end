@@ -3,6 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import * as diaryService from "../../services/diaryService";
 import CommentForm from "../CommentForm/CommentForm";
 import { UserContext } from "../../contexts/UserContext";
+import styles from "./DiaryDetails.module.css";
 
 const DiaryDetails = (props) => {
   const { diaryId } = useParams();
@@ -37,24 +38,27 @@ const DiaryDetails = (props) => {
   };
 
   return (
-    <main>
+    <main className={styles.container}>
       <section>
         <header>
           <h1>{diary.name}</h1>
-          <p>{`${diary.author.username} posted on
+          <div>
+            <p>{`${diary.author.username} posted on
             ${new Date(diary.createdAt).toLocaleDateString()}`}</p>
+
+            <p>Location: {diary.location}</p>
+            <p>Cuisine Type: {diary.cuisine}</p>
+            <p>Rating: {diary.rating}</p>
+            {diary.author._id === user._id && (
+              <>
+                <Link to={`/diary/${diaryId}/edit`}>Edit</Link>
+                <button onClick={() => props.handleDeleteDiary(diaryId)}>
+                  Delete
+                </button>
+              </>
+            )}
+          </div>
         </header>
-        <p>Location: {diary.location}</p>
-        <p>Cuisine Type: {diary.cuisine}</p>
-        <p>Rating: {diary.rating}</p>
-        {diary.author._id === user._id && (
-          <>
-            <Link to={`/diary/${diaryId}/edit`}>Edit</Link>
-            <button onClick={() => props.handleDeleteDiary(diaryId)}>
-              Delete
-            </button>
-          </>
-        )}
       </section>
       <section>
         <h2>Comments</h2>
@@ -64,20 +68,22 @@ const DiaryDetails = (props) => {
         {diary.comments.map((comment) => (
           <article key={comment._id}>
             <header>
-              <p>
-                {`${comment.author.username} posted on
+              <div>
+                <p>
+                  {`${comment.author.username} posted on
                 ${new Date(comment.createdAt).toLocaleDateString()}`}
-              </p>
-              {diary.author._id === user._id && (
-                <>
-                  <Link to={`/diary/${diaryId}/comments/${comment._id}/edit`}>
-                    Edit
-                  </Link>
-                  <button onClick={() => handleDeleteComment(comment._id)}>
-                    Delete
-                  </button>
-                </>
-              )}
+                </p>
+                {diary.author._id === user._id && (
+                  <>
+                    <Link to={`/diary/${diaryId}/comments/${comment._id}/edit`}>
+                      Edit
+                    </Link>
+                    <button onClick={() => handleDeleteComment(comment._id)}>
+                      Delete
+                    </button>
+                  </>
+                )}
+              </div>
             </header>
             <p>{comment.text}</p>
           </article>

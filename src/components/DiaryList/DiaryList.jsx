@@ -1,7 +1,9 @@
 import { Link } from "react-router";
+import styles from "./DiaryList.module.css";
+
 const DiaryList = (props) => {
   return (
-    <main>
+    <main className={styles.container}>
       {props.diary.map((diary) => (
         <Link key={diary._id} to={`/diary/${diary._id}`}>
           <article>
