@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import * as diaryService from "../../services/diaryService";
 
-const DiaryForm = () => {
+const DiaryForm = (props) => {
   const [formData, setFormData] = useState({
     name: "",
     location: "",
@@ -19,49 +19,63 @@ const DiaryForm = () => {
     });
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    await diaryService.create(formData);
-    navigate("/diary");
+    props.handleAddDiary(formData);
   };
+
   return (
     <main>
       <h1>New Diary</h1>
 
       <form onSubmit={handleSubmit}>
-        <label>Name</label>
+        <label htmlFor="name-input">Name</label>
         <input
+          required
           type="text"
           name="name"
+          id="name-input"
           value={formData.name}
           onChange={handleChange}
         />
 
-        <label>Location</label>
+        <label htmlFor="location-input">Location</label>
         <input
+          required
           type="text"
           name="location"
+          id="location-input"
           value={formData.location}
           onChange={handleChange}
         />
 
-        <label>Cuisine</label>
-        <input
-          type="text"
+        <label htmlFor="cuisine-input">Cuisine</label>
+        <select
+          required
           name="cuisine"
+          id="cuisine-input"
           value={formData.cuisine}
           onChange={handleChange}
-        />
+        >
+          <option value="Bakery">Bakery</option>
+          <option value="Bar">Bar</option>
+          <option value="Brunch">Brunch</option>
+          <option value="Cafe">Cafe</option>
+          <option value="Fast Food">Fast Food</option>
+          <option value="Fine Dining">Fine Dining</option>
+        </select>
 
-        <label>Rating</label>
+        <label>Rating: {formData.rating}</label>
         <input
-          type="number"
+          type="range"
           name="rating"
+          min="1"
+          max="5"
           value={formData.rating}
           onChange={handleChange}
         />
 
-        <button type="submit">Submit</button>
+        <button type="submit">SUBMIT</button>
       </form>
     </main>
   );
