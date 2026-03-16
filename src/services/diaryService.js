@@ -14,6 +14,19 @@ const index = async () => {
     console.log(error);
   }
 }
+
+const show = async (diaryId) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${diaryId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+    })
+    return res.json()
+  } catch (error) {
+    console.log(error)
+  }
+}
 const create = async (DiaryFormData) => {
   try {
     const res = await fetch(BASE_URL, {
@@ -22,7 +35,7 @@ const create = async (DiaryFormData) => {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(hootFormData),
+      body: JSON.stringify(DiaryFormData),
     });
     return res.json()
   } catch (error) {
