@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
+
 const DiaryList = (props) => {
   return (
     <main>
@@ -6,7 +7,7 @@ const DiaryList = (props) => {
         <Link key={diary._id} to={`/diary/${diary._id}`}>
           <article>
             <header>
-              <h2>{diary.title}</h2>
+              <h2>{diary.name}</h2>
               <p>
                 {`${diary.author.username} posted on
                 ${new Date(diary.createdAt).toLocaleDateString()}`}

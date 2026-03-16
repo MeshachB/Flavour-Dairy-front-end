@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import * as diaryService from "../../services/diaryService";
 
 const DiaryForm = () => {
-
   const [formData, setFormData] = useState({
     name: "",
     location: "",
     cuisine: "",
-    rating: ""
+    rating: "",
   });
 
   const navigate = useNavigate();
@@ -16,21 +15,20 @@ const DiaryForm = () => {
   const handleChange = (event) => {
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  await diaryService.create(formData);
-  navigate("/diary");
-};
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await diaryService.create(formData);
+    navigate("/diary");
+  };
   return (
     <main>
       <h1>New Diary</h1>
 
       <form onSubmit={handleSubmit}>
-
         <label>Name</label>
         <input
           type="text"
@@ -64,7 +62,6 @@ const handleSubmit = async (event) => {
         />
 
         <button type="submit">Submit</button>
-
       </form>
     </main>
   );

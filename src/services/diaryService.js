@@ -13,4 +13,15 @@ const index = async () => {
   }
 };
 
-export { index };
+const show = async (diaryId) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${diaryId}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { index, show };

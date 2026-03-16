@@ -1,12 +1,12 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import * as diaryService from "../../services/diaryService";
-
 
 const DiaryDetails = () => {
   const { diaryId } = useParams();
   const navigate = useNavigate();
   const [diary, setDiary] = useState(null);
+
   useEffect(() => {
     const fetchDiary = async () => {
       const diaryData = await diaryService.show(diaryId);
@@ -16,25 +16,43 @@ const DiaryDetails = () => {
     fetchDiary();
   }, [diaryId]);
 
-  if (!diary) return <h1>Loading...</h1>;
-  
-const handleDelete = async () => {
-  await diaryService.deleteDiary(diaryId);
-  navigate("/diary");
-};
+  if (!diary) return <main>Loading...</main>;
+
+  const handleDelete = async () => {
+    await diaryService.deleteDiary(diaryId);
+    navigate("/diary");
+  };
 
   return (
-  <main>
-    <h1>Diary Details</h1>
-    <p>{diary?.name}</p>
-    <p>{diary?.location}</p>
-    <p>{diary?.cuisine}</p>
-    <p>{diary?.rating}</p>
-    <p>{diary.author?.username}</p>
-    <Link to={`/diary/${diaryId}/edit`}>Edit</Link>
-    <button onClick={handleDelete}>Delete</button>
-  </main>
-);
+    <main>
+      <section>
+        <header>
+          <h1>{diary.name}</h1>
+          <p>{`${diary.author.username} posted on
+            ${new Date(diary.createdAt).toLocaleDateString()}`}</p>
+        </header>
+        <p>Location: {diary.location}</p>
+        <p>Cuisine Type: {diary.cuisine}</p>
+        <p>Rating: {diary.rating}</p>
+      </section>
+      <section>
+        <h2>Comments</h2>
+        {!diary.comments.length && <p>There are no comments.</p>}
+
+        {diary.comments.map((comment) => (
+          <article key={comment._id}>
+            <header>
+              <p>
+                {`${comment.author.username} posted on
+                ${new Date(comment.createdAt).toLocaleDateString()}`}
+              </p>
+            </header>
+            <p>{comment.text}</p>
+          </article>
+        ))}
+      </section>
+    </main>
+  );
 };
 
 export default DiaryDetails;
